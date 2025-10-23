@@ -12,11 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const userProfileController_1 = require("../controllers/userProfileController");
-const v1Router = express_1.default.Router();
-v1Router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.json({ message: "Hello world" });
-}));
-v1Router.post("/", userProfileController_1.createUserProfile);
-exports.default = v1Router;
+const dotenv_1 = __importDefault(require("dotenv"));
+const mongoose_1 = __importDefault(require("mongoose"));
+dotenv_1.default.config();
+function connectDB() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            mongoose_1.default.connect(process.env.MONGOURL);
+            console.log("Mongodb connectDB successfully");
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+}
+exports.default = connectDB;
