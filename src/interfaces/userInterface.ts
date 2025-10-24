@@ -1,4 +1,7 @@
+
+
 export interface IuserProfile {
+
     fullName: string,
     email: string,
     contactNumber: string,
@@ -10,7 +13,7 @@ export interface IuserProfile {
         pincode: string
     },
     nationality: string,
-    isActive: boolean
+    isActive: boolean,
 }
 
 export interface USERPROFILE {

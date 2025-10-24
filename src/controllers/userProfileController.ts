@@ -17,8 +17,8 @@ export const createUserProfile = async (req: Request<USERPROFILE>,
         return;
     }
 
-    try {
 
+    try {
         // after validation data destructuring  
         const { fullName, email, contactNumber, age, state, district, city, pincode, nationality } = value;
 
@@ -27,7 +27,7 @@ export const createUserProfile = async (req: Request<USERPROFILE>,
         const userExist = await userProfileModel.findOne({ email })
 
         if (userExist) {
-            res.status(409).json({ success: false, message: "user already exist" })
+            res.status(409).json({ success: false, message: "Account already exist" })
             return;
         }
 
@@ -38,11 +38,9 @@ export const createUserProfile = async (req: Request<USERPROFILE>,
         const cityToUppercase = firstLetterToUpperCase(city)
         const nationalityToUppercase = firstLetterToUpperCase(nationality)
 
-
-        // Save user profile    
         const newUser = new userProfileModel({
-            fullName: fullNameToUppercase,
-            email,
+            fullName: fullNameToUppercase.trim(),
+            email: email.trim(),
             contactNumber,
             age,
             address: {
@@ -78,6 +76,34 @@ export const getUserProfiles = async (req: Request,
     }
 }
 
+export const getSingleUserProfile = async (req: Request<{ id: string }>,
+    res: Response<{ success: boolean, message: string, data?: IuserProfile }>): Promise<void> => {
+
+    const { id } = req.params;
+
+    if (!id) {
+        res.status(400).json({ success: false, message: "Id not get" })
+        return
+    }
+
+    try {
+
+        const findsingleUser = await userProfileModel.findById(id);
+
+
+        if (!findsingleUser) {
+            res.status(404).json({ success: false, message: "User profile not found" })
+            return
+        }
+
+        res.status(200).json({ success: true, message: "Data fetch successfully", data: findsingleUser })
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal server error" })
+        return
+    }
+}
+
 
 
 // update user profile by id
@@ -86,8 +112,6 @@ export const updateUserProfile = async (req: Request<any>,
 
     //  data validation
     const { error, value } = UserProfileValidation.validate(req.body)
-
-
 
     if (error) {
         res.status(400).json({ success: false, message: error.details[0].message })
@@ -100,6 +124,7 @@ export const updateUserProfile = async (req: Request<any>,
         res.status(400).json({ success: false, message: "Id not get" })
         return
     }
+
 
     try {
         // find user by id 
@@ -125,8 +150,8 @@ export const updateUserProfile = async (req: Request<any>,
 
 
         const updateprofile = await userProfileModel.findByIdAndUpdate(id, {
-            fullName: fullNameToUppercase,
-            email,
+            fullName: fullNameToUppercase.trim(),
+            email: email.trim(),
             contactNumber,
             age,
             address: {
@@ -147,6 +172,7 @@ export const updateUserProfile = async (req: Request<any>,
 }
 
 
+
 export const deleteUserProfile = async (req: Request<{ id: string }>,
     res: Response<{ success: boolean, message: string }>): Promise<void> => {
 
@@ -157,6 +183,7 @@ export const deleteUserProfile = async (req: Request<{ id: string }>,
 
         if (!findUserProfileExistById) {
             res.status(404).json({ success: false, message: "User not found" })
+            return
         }
 
         await userProfileModel.findByIdAndDelete(id)

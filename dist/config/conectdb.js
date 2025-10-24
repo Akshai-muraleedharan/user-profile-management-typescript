@@ -17,12 +17,14 @@ const mongoose_1 = __importDefault(require("mongoose"));
 dotenv_1.default.config();
 function connectDB() {
     return __awaiter(this, void 0, void 0, function* () {
+        const mongoConnection = process.env.MONGO_URI || "mongodb://localhost:27017/user-profile-management";
         try {
-            mongoose_1.default.connect(process.env.MONGOURL);
+            mongoose_1.default.connect(mongoConnection);
             console.log("Mongodb connectDB successfully");
         }
         catch (error) {
             console.log(error);
+            process.exit(1);
         }
     });
 }
