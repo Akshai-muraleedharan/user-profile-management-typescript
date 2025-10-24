@@ -62,8 +62,8 @@ Add your configuration details:
 
 ```ini
 
-PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/
+PORT=8004
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/user-profile-management
 
 ```
 ------
