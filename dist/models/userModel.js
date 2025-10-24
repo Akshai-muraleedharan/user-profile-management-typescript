@@ -13,7 +13,7 @@ const userProfileSchema = new mongoose_1.Schema({
         pincode: { type: String }
     },
     nationality: { type: String },
-    isActive: { type: Boolean, default: false }
-});
+    isActive: { type: Boolean, default: false },
+}, { timestamps: true });
 const userProfileModel = (0, mongoose_1.model)('User', userProfileSchema);
 exports.default = userProfileModel;

@@ -14,8 +14,9 @@ const userProfileSchema = new Schema<IuserProfile>({
         pincode: { type: String }
     },
     nationality: { type: String },
-    isActive: { type: Boolean, default: false }
-})
+    isActive: { type: Boolean, default: false },
+
+}, { timestamps: true })
 
 const userProfileModel = model<IuserProfile>('User', userProfileSchema);
 

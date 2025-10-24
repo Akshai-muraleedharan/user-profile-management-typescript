@@ -14,7 +14,11 @@ app.use(express.json())
 // connect db
 connectDB()
 
+
+
 app.use("/api/v1", v1Router)
+
+
 
 app.use((req: Request, res: Response<{ success: boolean, message: string }>): void => {
     res.status(400).json({ success: false, message: "Endpoint not found" })
