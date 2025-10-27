@@ -3,7 +3,7 @@ import userProfileModel from "../models/userModel"
 import { IuserProfile, USERPROFILE } from "../interfaces/userInterface"
 import { UserProfileValidation } from "../utils/joivalidation"
 import { firstLetterToUpperCase } from "../utils/wordFirstLetterToUppercase"
-
+import { Types } from "mongoose"
 
 // create user profile
 export const createUserProfile = async (req: Request<USERPROFILE>,
@@ -54,12 +54,13 @@ export const createUserProfile = async (req: Request<USERPROFILE>,
 
         await newUser.save()
 
-        res.status(200).json({ success: true, message: "User profile create successfully", data: newUser })
-    } catch (error) {
+        res.status(201).json({ success: true, message: "User profile create successfully", data: newUser })
+    } catch (error: any) {
         res.status(500).json({ success: false, message: "Internal server error" })
         return
     }
 }
+
 
 
 // fetch user's document
@@ -86,6 +87,13 @@ export const getSingleUserProfile = async (req: Request<{ id: string }>,
         return
     }
 
+    const isValidId: boolean = Types.ObjectId.isValid(id)
+
+    if (isValidId === false) {
+        res.status(400).json({ success: false, message: "Invalid User ID format" })
+        return;
+    }
+
     try {
 
         const findsingleUser = await userProfileModel.findById(id);
@@ -98,7 +106,8 @@ export const getSingleUserProfile = async (req: Request<{ id: string }>,
 
         res.status(200).json({ success: true, message: "Data fetch successfully", data: findsingleUser })
 
-    } catch (error) {
+    } catch (error: any) {
+        console.log(error)
         res.status(500).json({ success: false, message: "Internal server error" })
         return
     }
@@ -123,6 +132,13 @@ export const updateUserProfile = async (req: Request<any>,
     if (!id) {
         res.status(400).json({ success: false, message: "Id not get" })
         return
+    }
+
+    const isValidId: boolean = Types.ObjectId.isValid(id)
+
+    if (isValidId === false) {
+        res.status(400).json({ success: false, message: "Invalid User ID format" })
+        return;
     }
 
 
@@ -165,7 +181,7 @@ export const updateUserProfile = async (req: Request<any>,
 
         res.status(200).json({ success: true, message: "Data fetch successfully", data: updateprofile })
 
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ success: false, message: "Internal server error" })
         return
     }
@@ -177,6 +193,14 @@ export const deleteUserProfile = async (req: Request<{ id: string }>,
     res: Response<{ success: boolean, message: string }>): Promise<void> => {
 
     const { id } = req.params
+
+    const isValidId: boolean = Types.ObjectId.isValid(id)
+
+    if (isValidId === false) {
+        res.status(400).json({ success: false, message: "Invalid User ID format" })
+        return;
+    }
+
     try {
 
         const findUserProfileExistById = await userProfileModel.findById(id);
@@ -190,7 +214,7 @@ export const deleteUserProfile = async (req: Request<{ id: string }>,
 
         res.status(200).json({ success: false, message: "User profile delete successfully" })
 
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ success: false, message: "Internal server error" })
         return
     }

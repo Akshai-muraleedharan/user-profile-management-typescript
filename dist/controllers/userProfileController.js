@@ -16,6 +16,7 @@ exports.deleteUserProfile = exports.updateUserProfile = exports.getSingleUserPro
 const userModel_1 = __importDefault(require("../models/userModel"));
 const joivalidation_1 = require("../utils/joivalidation");
 const wordFirstLetterToUppercase_1 = require("../utils/wordFirstLetterToUppercase");
+const mongoose_1 = require("mongoose");
 // create user profile
 const createUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //  data validation
@@ -53,7 +54,7 @@ const createUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functi
             nationality: nationalityToUppercase
         });
         yield newUser.save();
-        res.status(200).json({ success: true, message: "User profile create successfully", data: newUser });
+        res.status(201).json({ success: true, message: "User profile create successfully", data: newUser });
     }
     catch (error) {
         res.status(500).json({ success: false, message: "Internal server error" });
@@ -80,6 +81,11 @@ const getSingleUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(400).json({ success: false, message: "Id not get" });
         return;
     }
+    const isValidId = mongoose_1.Types.ObjectId.isValid(id);
+    if (isValidId === false) {
+        res.status(400).json({ success: false, message: "Invalid User ID format" });
+        return;
+    }
     try {
         const findsingleUser = yield userModel_1.default.findById(id);
         if (!findsingleUser) {
@@ -89,6 +95,7 @@ const getSingleUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(200).json({ success: true, message: "Data fetch successfully", data: findsingleUser });
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({ success: false, message: "Internal server error" });
         return;
     }
@@ -105,6 +112,11 @@ const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functi
     const { id } = req.params;
     if (!id) {
         res.status(400).json({ success: false, message: "Id not get" });
+        return;
+    }
+    const isValidId = mongoose_1.Types.ObjectId.isValid(id);
+    if (isValidId === false) {
+        res.status(400).json({ success: false, message: "Invalid User ID format" });
         return;
     }
     try {
@@ -145,6 +157,11 @@ const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.updateUserProfile = updateUserProfile;
 const deleteUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    const isValidId = mongoose_1.Types.ObjectId.isValid(id);
+    if (isValidId === false) {
+        res.status(400).json({ success: false, message: "Invalid User ID format" });
+        return;
+    }
     try {
         const findUserProfileExistById = yield userModel_1.default.findById(id);
         if (!findUserProfileExistById) {
