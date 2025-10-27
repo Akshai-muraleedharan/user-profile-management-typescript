@@ -9,7 +9,8 @@ const v1Router: Router = express.Router()
  * /users:
  *   post:
  *     summary: Create a new user
- *     tags: [User Create]
+ *     tags: 
+ *        - User profile management api's
  *     requestBody:
  *       required: true
  *       content:
@@ -104,7 +105,8 @@ v1Router.post("/users", createUserProfile)
  * /users:
  *   get:
  *     summary: Retrieve a list of users
- *      tags:[User]
+ *     tags: 
+ *        - User profile management api's
  *     responses:
  *       200:
  *         description: Successfully retrieved list of users.
@@ -167,7 +169,8 @@ v1Router.get("/users", getUserProfiles)
  *  /users/{id}:
  *    get:
  *      summary: get user by ID    
- *       tags:[User]
+ *      tags: 
+ *        - User profile management api's
  *      parameters:
  *          - in: path 
  *            name: id  
@@ -192,7 +195,8 @@ v1Router.get("/users/:id", getSingleUserProfile)
  * /users/{id}:
  *   put:
  *     summary: Update user profile by ID
- *      tags:[User]
+ *     tags: 
+ *        - User profile management api's
  *     parameters:
  *         - in: path 
  *           name: id
@@ -254,7 +258,8 @@ v1Router.put("/users/:id", updateUserProfile)
  * /users/{id}:
  *   delete:
  *     summary: User profile delete by ID
- *      tags:[User]
+ *     tags: 
+ *        - User profile management api's
  *     parameters:
  *          - in: path 
  *            name: id  
