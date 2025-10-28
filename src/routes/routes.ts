@@ -20,10 +20,10 @@ const v1Router: Router = express.Router()
  *             properties:
  *               fullName:
  *                 type: string
- *                 example: test
+ *                 example: jack
  *               email:
  *                 type: string
- *                 example: test@gmail.com
+ *                 example: jack@gmail.com
  *               contactNumber:
  *                 type: string
  *                 example: 9483748374
@@ -32,16 +32,16 @@ const v1Router: Router = express.Router()
  *                 example: 29
  *               nationality:
  *                 type: string
- *                 example: testnationality
+ *                 example: indian
  *               state:
  *                 type: string
- *                 example: kerala
+ *                 example: tamilnadu
  *               district:
  *                 type: string
- *                 example: ernakulam
+ *                 example: theni
  *               city:
  *                 type: string
- *                 example: kakkanad
+ *                 example: theni
  *               pincode:
  *                 type: string
  *                 example: 685943
@@ -107,6 +107,17 @@ v1Router.post("/users", createUserProfile)
  *     summary: Retrieve a list of users
  *     tags: 
  *        - User profile management api's
+ *     parameters:
+ *       - name : limit
+ *         in: query
+ *         schema: 
+ *           type: string
+ *           default: 6
+ *       - name: page
+ *         in: query
+ *         schema:
+ *           type: string
+ *           default: 1
  *     responses:
  *       200:
  *         description: Successfully retrieved list of users.

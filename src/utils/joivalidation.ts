@@ -1,9 +1,9 @@
 import Joi from "joi";
-import { USERPROFILE } from "../interfaces/userInterface"
+import { UserDataValidate } from "../interfaces/userInterface"
 
 
 
-export const UserProfileValidation = Joi.object<USERPROFILE>({
+export const UserProfileValidation = Joi.object<UserDataValidate>({
     fullName: Joi.string().pattern(/^[A-Za-z\s]+$/).required().min(3).max(20).messages({
         'string.required': 'FullName is required',
         'string.base': 'FullName must be a string',

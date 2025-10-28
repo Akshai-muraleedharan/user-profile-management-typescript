@@ -1,12 +1,12 @@
 import type { Request, Response } from "express"
 import userProfileModel from "../models/userModel"
-import { IuserProfile, USERPROFILE } from "../interfaces/userInterface"
+import { IuserProfile, UserDataValidate, UserProfilePagination } from "../interfaces/userInterface"
 import { UserProfileValidation } from "../utils/joivalidation"
 import { firstLetterToUpperCase } from "../utils/wordFirstLetterToUppercase"
 import { Types } from "mongoose"
 
 // create user profile
-export const createUserProfile = async (req: Request<USERPROFILE>,
+export const createUserProfile = async (req: Request<UserDataValidate>,
     res: Response<{ success: boolean, message: string, data?: IuserProfile }>): Promise<void> => {
 
     //  data validation
@@ -64,13 +64,25 @@ export const createUserProfile = async (req: Request<USERPROFILE>,
 
 
 // fetch user's document
-export const getUserProfiles = async (req: Request,
-    res: Response<{ success: boolean, message: string, data?: IuserProfile[] }>): Promise<void> => {
-    try {
-        // fetch user's full document 
-        const fetchUserProfile = await userProfileModel.find({});
+export const getUserProfiles = async (req: Request<{}, null, {}, { limit: string, page: string }>,
+    res: Response<UserProfilePagination>): Promise<void> => {
 
-        res.status(200).json({ success: true, message: "Data fetch successfully", data: fetchUserProfile })
+    const page: number = parseInt(req.query.page) || 1;
+    const limit: number = parseInt(req.query.limit) || 6;
+
+    console.log(req.query.page)
+    console.log(page)
+    try {
+
+        const totalItem = await userProfileModel.countDocuments()
+        const totalPages = Math.ceil(totalItem / limit)
+        const skip = (page - 1) * limit
+
+
+        // fetch user's full document 
+        const fetchUserProfile = await userProfileModel.find().skip(skip).limit(limit);
+
+        res.status(200).json({ success: true, message: "Data fetch successfully", currentPage: page, totalPages, totalItem, data: fetchUserProfile })
     } catch (error) {
         res.status(500).json({ success: false, message: "Internal server error" })
         return

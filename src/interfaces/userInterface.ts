@@ -16,7 +16,7 @@ export interface IuserProfile {
     isActive: boolean,
 }
 
-export interface USERPROFILE {
+export interface UserDataValidate {
     fullName: { type: String, required: true },
     email: { type: String, required: true },
     contactNumber: { type: String },
@@ -26,4 +26,13 @@ export interface USERPROFILE {
     city: { type: String },
     pincode: { type: String }
     nationality: { type: String },
+}
+
+export interface UserProfilePagination {
+    success: boolean,
+    message: string,
+    currentPage?: number,
+    totalPages?: number,
+    totalItem?: number,
+    data?: IuserProfile[]
 }
