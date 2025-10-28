@@ -70,8 +70,7 @@ export const getUserProfiles = async (req: Request<{}, null, {}, { limit: string
     const page: number = parseInt(req.query.page) || 1;
     const limit: number = parseInt(req.query.limit) || 6;
 
-    console.log(req.query.page)
-    console.log(page)
+
     try {
 
         const totalItem = await userProfileModel.countDocuments()
