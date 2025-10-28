@@ -64,10 +64,15 @@ const createUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.createUserProfile = createUserProfile;
 // fetch user's document
 const getUserProfiles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
     try {
+        const totalItem = yield userModel_1.default.countDocuments();
+        const totalPages = Math.ceil(totalItem / limit);
+        const skip = (page - 1) * limit;
         // fetch user's full document 
-        const fetchUserProfile = yield userModel_1.default.find({});
-        res.status(200).json({ success: true, message: "Data fetch successfully", data: fetchUserProfile });
+        const fetchUserProfile = yield userModel_1.default.find().skip(skip).limit(limit);
+        res.status(200).json({ success: true, message: "Data fetch successfully", currentPage: page, totalPages, totalItem, data: fetchUserProfile });
     }
     catch (error) {
         res.status(500).json({ success: false, message: "Internal server error" });
