@@ -63,6 +63,7 @@ export const createUserProfile = async (req: Request<UserDataValidate>,
 
 
 
+
 // fetch user's document
 export const getUserProfiles = async (req: Request<{}, null, {}, { limit: string, page: string }>,
     res: Response<UserProfilePagination>): Promise<void> => {
