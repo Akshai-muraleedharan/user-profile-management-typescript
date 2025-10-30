@@ -14,6 +14,9 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 // connect db
 (0, conectdb_1.default)();
+app.get("/", (req, res) => {
+    res.json({ success: true, message: "hello world!" });
+});
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
 app.use("/api/v1", routes_1.default);
 app.use((req, res) => {

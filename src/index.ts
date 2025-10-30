@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import type { Express, Request, Response } from "express"
 import dotenv from "dotenv"
 import v1Router from "./routes/routes"
@@ -15,7 +15,15 @@ app.use(express.json())
 // connect db
 connectDB()
 
+
+
+app.get("/", (req: Request, res: Response<{ success: boolean, message: string }>) => {
+    res.json({ success: true, message: "hello world!" })
+})
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+
 
 app.use("/api/v1", v1Router)
 
@@ -26,6 +34,7 @@ app.use((req: Request, res: Response<{ success: boolean, message: string }>): vo
 })
 
 const PORT: number | string = process.env.PORT || 3000
+
 
 
 
